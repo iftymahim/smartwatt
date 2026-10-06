@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartWatt – Energy Bill Calculator</title>
+<meta name="description" content="SmartWatt is a free electricity bill calculator. Add your appliances, choose flat or slab tariff, and get an instant monthly bill estimate with charts, savings tips and solar insights.">
+<meta name="theme-color" content="#0a0f1e">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SmartWatt – Energy Bill Calculator">
+<meta property="og:description" content="Estimate your monthly electricity bill in seconds. Slab tariff, VAT, charts, savings tips and solar estimator.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip" href="#calculator" data-i18n="skip">Skip to calculator</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="topbar no-print" id="top">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#top" aria-label="SmartWatt home">
+      <span class="bolt" aria-hidden="true">⚡</span>
+      <span class="brand-t">Smart<em>Watt</em></span>
+    </a>
+    <nav class="links" id="navLinks" aria-label="Main">
+      <a href="#calculator" data-i18n="nav_calc">Calculator</a>
+      <a href="#analysis" data-i18n="nav_analysis">Analysis</a>
+      <a href="#tools" data-i18n="nav_tools">Tools</a>
+      <a href="#tips" data-i18n="nav_tips">Tips</a>
+      <a href="#faq" data-i18n="nav_faq">FAQ</a>
+      <a href="#about" data-i18n="nav_about">About</a>
+    </nav>
+    <div class="actions">
+      <button type="button" class="icon-btn txt" id="langBtn" aria-label="Switch language">বাংলা</button>
+      <button type="button" class="icon-btn" id="themeBtn" aria-label="Toggle dark or light theme">🌙</button>
+      <button type="button" class="icon-btn menu" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero no-print">
+  <div class="wrap">
+    <div class="badge" data-i18n="hero_badge">ECE Project · Energy Bill Calculator</div>
+    <h1 data-i18n-html="hero_title">Know your electricity bill <span>before it arrives</span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">Add your appliances, pick your tariff and get an instant monthly estimate with charts, savings tips and solar insights.</p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#calculator" data-i18n="hero_cta">Start calculating</a>
+      <button type="button" class="btn ghost" id="installBtn" hidden data-i18n="hero_install">Install app</button>
+    </div>
+  </div>
+</section>
+
+<main>
+<!-- ============ CALCULATOR ============ -->
+<section id="calculator" class="wrap section">
+  <div class="grid">
+
+    <!-- LEFT COLUMN -->
+    <div class="col">
+
+      <article class="card no-print" id="settingsCard">
+        <h2><span aria-hidden="true">⚙</span> <span data-i18n="settings">Unit Rate Settings</span></h2>
+
+        <div class="row">
+          <label class="field">
+            <span data-i18n="currency">Currency</span>
+            <select id="currency">
+              <option value="BDT">৳ BDT</option>
+              <option value="INR">₹ INR</option>
+              <option value="USD">$ USD</option>
+              <option value="GBP">£ GBP</option>
+              <option value="EUR">€ EUR</option>
+            </select>
+          </label>
+        </div>
+        <div class="chips" id="presetChips" aria-label="Quick country rates"></div>
+
+        <div class="seg" role="group" aria-label="Tariff type">
+          <button type="button" class="seg-b active" data-mode="flat" aria-pressed="true" data-i18n="mode_flat">Flat rate</button>
+          <button type="button" class="seg-b" data-mode="slab" aria-pressed="false" data-i18n="mode_slab">Slab (tiered)</button>
+        </div>
+
+        <div id="flatBox">
+          <label class="field">
+            <span data-i18n="unit_price">Unit price (per kWh)</span>
+            <input id="rate" type="number" min="0" step="0.01" inputmode="decimal">
+          </label>
+        </div>
+
+        <div id="slabBox" hidden>
+          <p class="hint" data-i18n="slab_hint">Tiered tariff: each block of units is charged at its own rate. Defaults are sample residential rates — please check your distributor's current tariff.</p>
+          <div id="slabRows" class="slabs"></div>
+          <button type="button" class="link-btn" id="slabReset" data-i18n="slab_reset">Reset to default slabs</button>
+        </div>
+
+        <div class="row three">
+          <label class="field">
+            <span data-i18n="vat">VAT (%)</span>
+            <input id="vat" type="number" min="0" max="100" step="0.1" inputmode="decimal">
+          </label>
+          <label class="field">
+            <span data-i18n="fixed">Fixed / demand charge</span>
+            <input id="fixed" type="number" min="0" step="0.01" inputmode="decimal">
+          </label>
+          <label class="field">
+            <span data-i18n="billing_days">Billing days</span>
+            <input id="billingDays" type="number" min="1" max="31" step="1" inputmode="numeric">
+          </label>
+        </div>
+        <label class="field">
+          <span data-i18n="budget">Monthly budget (optional)</span>
+          <input id="budget" type="number" min="0" step="1" inputmode="decimal" placeholder="0">
+        </label>
+      </article>
+
+      <article class="card no-print" id="formCard">
+        <h2><span aria-hidden="true">⚡</span> <span id="formTitle" data-i18n="add_appliance">Add Appliance</span></h2>
+        <form id="appForm" novalidate>
+          <label class="field">
+            <span data-i18n="choose_preset">Choose appliance</span>
+            <select id="preset"></select>
+          </label>
+
+          <label class="field">
+            <span><span data-i18n="app_name">Appliance Name</span> <i class="muted" data-i18n="or_custom">(or enter custom)</i></span>
+            <input id="aName" type="text" maxlength="40" autocomplete="off" data-i18n-ph="ph_name" placeholder="e.g. Ceiling Fan">
+            <small class="err" role="alert"></small>
+          </label>
+
+          <div class="row">
+            <label class="field">
+              <span data-i18n="wattage">Wattage (W)</span>
+              <input id="aW" type="number" min="0" step="any" inputmode="decimal">
+              <small class="err" role="alert"></small>
+            </label>
+            <label class="field">
+              <span data-i18n="quantity">Quantity</span>
+              <input id="aQ" type="number" min="1" step="1" value="1" inputmode="numeric">
+              <small class="err" role="alert"></small>
+            </label>
+          </div>
+
+          <div class="row">
+            <label class="field">
+              <span data-i18n="hours">Daily Usage (hours/day)</span>
+              <input id="aH" type="number" min="0" max="24" step="any" inputmode="decimal">
+              <small class="err" role="alert"></small>
+            </label>
+            <label class="field">
+              <span data-i18n="days">Days used / month</span>
+              <input id="aD" type="number" min="1" max="31" step="1" value="30" inputmode="numeric">
+              <small class="err" role="alert"></small>
+            </label>
+          </div>
+
+          <div class="row">
+            <label class="field">
+              <span data-i18n="duty">Duty cycle (%)</span>
+              <input id="aDuty" type="number" min="1" max="100" step="any" value="100" inputmode="decimal">
+              <small class="err" role="alert"></small>
+            </label>
+            <label class="field">
+              <span data-i18n="room">Room</span>
+              <select id="aRoom"></select>
+            </label>
+          </div>
+
+          <p class="hint" data-i18n="duty_hint">Duty cycle: how much of the time it really draws full power (e.g. a fridge ≈ 40%, an AC ≈ 60%).</p>
+
+          <div class="row btns">
+            <button type="submit" class="btn primary grow" id="submitBtn" data-i18n="add_to_bill">+ Add to Bill</button>
+            <button type="button" class="btn ghost" id="cancelEdit" hidden data-i18n="cancel">Cancel</button>
+          </div>
+
+          <div class="formula" data-i18n-html="formula">
+            <b>Monthly kWh</b> = (Wattage × Qty × Hours/day × Days × Duty%) ÷ 1000<br>
+            <b>Monthly Cost</b> = Monthly kWh × Unit Price
+          </div>
+        </form>
+      </article>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col">
+
+      <article class="card bill" id="summaryCard">
+        <div class="bill-label" data-i18n="est_bill">Estimated Monthly Bill</div>
+        <div class="bill-amt"><span class="cur" id="curSym">৳</span><span id="billAmt">0.00</span></div>
+
+        <div class="budget" id="budgetBox" hidden>
+          <div class="bar"><div class="bar-fill" id="budgetFill"></div></div>
+          <small id="budgetText"></small>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><small data-i18n="total_units">Total Units</small><b id="stUnits">0.0 kWh</b></div>
+          <div class="stat"><small data-i18n="per_day">Per Day</small><b id="stPerDay">0.00 kWh</b></div>
+          <div class="stat"><small data-i18n="daily_cost">Daily Cost</small><b id="stDaily">0</b></div>
+          <div class="stat"><small data-i18n="yearly">Yearly Estimate</small><b id="stYearly">0</b></div>
+          <div class="stat"><small data-i18n="co2">CO₂ / month</small><b id="stCo2">0 kg</b></div>
+          <div class="stat"><small data-i18n="avg_rate">Avg. rate / kWh</small><b id="stAvg">0</b></div>
+        </div>
+
+        <details class="breakdown" open>
+          <summary data-i18n="breakdown">Bill breakdown</summary>
+          <table class="bd" id="bdTable"><tbody></tbody></table>
+        </details>
+
+        <div class="btn-row no-print">
+          <button type="button" class="btn ghost sm" id="csvBtn">⬇ <span data-i18n="export_csv">Export CSV</span></button>
+          <button type="button" class="btn ghost sm" id="printBtn">🖨 <span data-i18n="print">Print</span></button>
+          <button type="button" class="btn ghost sm" id="shareBtn">🔗 <span data-i18n="share">Share link</span></button>
+        </div>
+      </article>
+
+      <article class="card" id="listCard">
+        <div class="list-head">
+          <h2><span aria-hidden="true">⚡</span> <span data-i18n="your_appliances">Your Appliances</span></h2>
+          <span class="count" id="count">0 items</span>
+        </div>
+        <div class="list-tools no-print">
+          <label class="field inline">
+            <span data-i18n="sort_by">Sort</span>
+            <select id="sort">
+              <option value="cost" data-i18n="sort_cost">Highest cost</option>
+              <option value="added" data-i18n="sort_added">Recently added</option>
+              <option value="name" data-i18n="sort_name">Name (A–Z)</option>
+            </select>
+          </label>
+          <button type="button" class="link-btn danger" id="clearAll" data-i18n="clear_all">Clear All</button>
+        </div>
+        <ul id="appList" class="app-list"></ul>
+        <div id="empty" class="empty">
+          <div class="empty-ico" aria-hidden="true">🔌</div>
+          <b data-i18n="empty_title">No appliances yet</b>
+          <p data-i18n="empty_text">Choose an appliance or enter a custom one, then tap “Add to Bill”.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ANALYSIS ============ -->
+<section id="analysis" class="wrap section">
+  <h2 class="sec-title"><span aria-hidden="true">📊</span> <span data-i18n="analysis">Usage Analysis</span></h2>
+  <div class="grid-3">
+    <article class="card">
+      <h3 data-i18n="chart_app">Cost by appliance</h3>
+      <div class="chart-box" id="boxApp"><canvas id="chartApp" aria-label="Cost by appliance chart" role="img"></canvas></div>
+      <p class="chart-empty" id="emptyApp" data-i18n="chart_empty">Add appliances to see the chart.</p>
+    </article>
+    <article class="card">
+      <h3 data-i18n="chart_room">Energy by room (kWh)</h3>
+      <div class="chart-box" id="boxRoom"><canvas id="chartRoom" aria-label="Energy by room chart" role="img"></canvas></div>
+      <p class="chart-empty" id="emptyRoom" data-i18n="chart_empty">Add appliances to see the chart.</p>
+    </article>
+    <article class="card">
+      <h3>💡 <span data-i18n="insights">Smart insights</span></h3>
+      <ul class="insights" id="insightList"></ul>
+    </article>
+  </div>
+</section>
+
+<!-- ============ TOOLS ============ -->
+<section id="tools" class="wrap section no-print">
+  <h2 class="sec-title"><span aria-hidden="true">🧰</span> <span data-i18n="tools_title">More Tools</span></h2>
+  <div class="grid-2">
+
+    <article class="card">
+      <h3>🔢 <span data-i18n="meter_title">Meter Reading Calculator</span></h3>
+      <p class="hint" data-i18n="meter_hint">Enter your previous and current meter readings. Uses the tariff, VAT and charges set above.</p>
+      <div class="row">
+        <label class="field"><span data-i18n="prev_reading">Previous reading</span><input id="mPrev" type="number" min="0" step="any" inputmode="decimal"></label>
+        <label class="field"><span data-i18n="curr_reading">Current reading</span><input id="mCurr" type="number" min="0" step="any" inputmode="decimal"></label>
+      </div>
+      <table class="bd" id="meterOut"><tbody></tbody></table>
+    </article>
+
+    <article class="card">
+      <h3>☀️ <span data-i18n="solar_title">Solar Savings Estimator</span></h3>
+      <p class="hint" data-i18n="solar_hint">Rough estimate of how much a rooftop solar system could cut your bill. Costs are editable assumptions.</p>
+      <div class="row">
+        <label class="field"><span data-i18n="sys_size">System size (kW)</span><input id="sSize" type="number" min="0" step="0.1" value="3" inputmode="decimal"></label>
+        <label class="field"><span data-i18n="sun_hours">Peak sun hours / day</span><input id="sSun" type="number" min="0" max="12" step="0.1" value="4.5" inputmode="decimal"></label>
+      </div>
+      <div class="row">
+        <label class="field"><span data-i18n="perf_ratio">System efficiency (%)</span><input id="sPR" type="number" min="1" max="100" step="1" value="80" inputmode="decimal"></label>
+        <label class="field"><span data-i18n="cost_per_kw">Cost per kW</span><input id="sCost" type="number" min="0" step="1" inputmode="decimal"></label>
+      </div>
+      <table class="bd" id="solarOut"><tbody></tbody></table>
+    </article>
+  </div>
+</section>
+
+<!-- ============ TIPS ============ -->
+<section id="tips" class="wrap section no-print">
+  <h2 class="sec-title"><span aria-hidden="true">🌱</span> <span data-i18n="tips_title">Energy-Saving Tips</span></h2>
+  <div class="grid-3 tips">
+    <article class="card tip"><div class="tip-ico" aria-hidden="true">💡</div><h3 data-i18n="tip1_t">Switch to LED</h3><p data-i18n="tip1_d">LED bulbs give the same light for a fraction of the power of incandescent or CFL lamps and last far longer.</p></article>
+    <article class="card tip"><div class="tip-ico" aria-hidden="true">❄️</div><h3 data-i18n="tip2_t">Use the AC wisely</h3><p data-i18n="tip2_d">Set a moderate temperature, clean the filters regularly and pair it with a ceiling fan to feel cooler.</p></article>
+    <article class="card tip"><div class="tip-ico" aria-hidden="true">🔌</div><h3 data-i18n="tip3_t">Cut standby power</h3><p data-i18n="tip3_d">Chargers, TVs and set-top boxes draw power even when idle. Use a switch strip and turn them off.</p></article>
+    <article class="card tip"><div class="tip-ico" aria-hidden="true">🧊</div><h3 data-i18n="tip4_t">Look after the fridge</h3><p data-i18n="tip4_d">Keep it away from heat, do not overfill it, let hot food cool first and check the door seal.</p></article>
+    <article class="card tip"><div class="tip-ico" aria-hidden="true">⏰</div><h3 data-i18n="tip5_t">Batch heavy tasks</h3><p data-i18n="tip5_d">Run the iron, washing machine and water pump in batches instead of in many short sessions.</p></article>
+    <article class="card tip"><div class="tip-ico" aria-hidden="true">⭐</div><h3 data-i18n="tip6_t">Buy efficient</h3><p data-i18n="tip6_d">Choose inverter ACs and appliances with good efficiency ratings; they cost more upfront but save every month.</p></article>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="wrap section narrow no-print">
+  <h2 class="sec-title"><span aria-hidden="true">❓</span> <span data-i18n="faq_title">Frequently Asked Questions</span></h2>
+  <details class="faq"><summary data-i18n="faq1_q">How is the bill calculated?</summary><p data-i18n="faq1_a">Each appliance's monthly energy is Wattage × Quantity × Hours/day × Days × Duty ÷ 1000 (in kWh). The total kWh is priced with your flat rate or slabs, then any fixed charge and VAT are added.</p></details>
+  <details class="faq"><summary data-i18n="faq2_q">What is a slab (tiered) tariff?</summary><p data-i18n="faq2_a">Instead of one price for every unit, the first block of units has a lower rate, the next block a higher rate, and so on. The more you use, the higher the rate on the extra units.</p></details>
+  <details class="faq"><summary data-i18n="faq3_q">Is the result exact?</summary><p data-i18n="faq3_a">No, it is an estimate. Real bills depend on actual usage, meter readings, current tariff, demand charges and any late fees. Check slab rates against your distributor's latest notice.</p></details>
+  <details class="faq"><summary data-i18n="faq4_q">Is my data saved or uploaded?</summary><p data-i18n="faq4_a">Your appliances and settings are stored only in your own browser. Nothing is sent to a server. The share link packs your data into the link itself.</p></details>
+  <details class="faq"><summary data-i18n="faq5_q">Can I install it or use it offline?</summary><p data-i18n="faq5_a">Yes. SmartWatt is a Progressive Web App: use your browser's “Install” or “Add to Home Screen” option to use it like an app.</p></details>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="wrap section no-print">
+  <h2 class="sec-title"><span aria-hidden="true">ℹ️</span> <span data-i18n="about_title">About SmartWatt</span></h2>
+  <div class="grid-3 steps">
+    <article class="card step"><div class="step-n">1</div><h3 data-i18n="step1_t">Set your rate</h3><p data-i18n="step1_d">Pick a currency and a flat rate or slab tariff, plus VAT and fixed charges.</p></article>
+    <article class="card step"><div class="step-n">2</div><h3 data-i18n="step2_t">Add appliances</h3><p data-i18n="step2_d">Choose from presets or enter your own wattage and daily usage.</p></article>
+    <article class="card step"><div class="step-n">3</div><h3 data-i18n="step3_t">See your bill</h3><p data-i18n="step3_d">Get totals, charts and tips to cut your monthly electricity cost.</p></article>
+  </div>
+
+  <div class="grid-2 about-bottom">
+    <article class="card">
+      <h3 data-i18n="team_title">The team</h3>
+      <p data-i18n="team_text">SmartWatt is an ECE project built to help households understand and reduce their electricity use.</p>
+      <p class="team-names"><span data-i18n="created_by">Created by</span> <b>Taioba, Jakia, Faysal</b></p>
+    </article>
+
+    <article class="card">
+      <h3 data-i18n="feedback_title">Send feedback</h3>
+      <form name="feedback" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="feedbackForm">
+        <input type="hidden" name="form-name" value="feedback">
+        <p hidden><label>Do not fill this out: <input name="bot-field"></label></p>
+        <label class="field"><span data-i18n="fb_name">Your name</span><input name="name" type="text" maxlength="60" required></label>
+        <label class="field"><span data-i18n="fb_msg">Message</span><textarea name="message" rows="3" maxlength="800" required></textarea></label>
+        <button type="submit" class="btn primary" data-i18n="fb_send">Send</button>
+      </form>
+    </article>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap foot-in">
+    <div>
+      <div class="brand small"><span class="bolt" aria-hidden="true">⚡</span><span class="brand-t">Smart<em>Watt</em></span></div>
+      <p class="muted" data-i18n="footer_disclaimer">Estimates only. Your actual bill may differ.</p>
+    </div>
+    <div class="foot-right">
+      <span class="muted"><span data-i18n="created_by">Created by</span> Taioba, Jakia, Foysal</span>
+     
+    </div>
+  </div>
+</footer>
+
+<a href="#summaryCard" class="mini-bill no-print" aria-label="Go to bill summary">
+  <span data-i18n="est_short">Est. bill</span><b id="miniBill">৳ 0.00</b>
+</a>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
