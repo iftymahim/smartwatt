@@ -32,6 +32,7 @@
     <nav class="links" id="navLinks" aria-label="Main">
       <a href="#calculator" data-i18n="nav_calc">Calculator</a>
       <a href="#analysis" data-i18n="nav_analysis">Analysis</a>
+      <a href="#billcheck" data-i18n="nav_check">Bill Check</a>
       <a href="#tools" data-i18n="nav_tools">Tools</a>
       <a href="#tips" data-i18n="nav_tips">Tips</a>
       <a href="#faq" data-i18n="nav_faq">FAQ</a>
@@ -194,6 +195,7 @@
       <article class="card bill" id="summaryCard">
         <div class="bill-label" data-i18n="est_bill">Estimated Monthly Bill</div>
         <div class="bill-amt"><span class="cur" id="curSym">৳</span><span id="billAmt">0.00</span></div>
+        <div class="calib-badge" id="calibBadge" hidden></div>
 
         <div class="budget" id="budgetBox" hidden>
           <div class="bar"><div class="bar-fill" id="budgetFill"></div></div>
@@ -218,6 +220,7 @@
           <button type="button" class="btn ghost sm" id="csvBtn">⬇ <span data-i18n="export_csv">Export CSV</span></button>
           <button type="button" class="btn ghost sm" id="printBtn">🖨 <span data-i18n="print">Print</span></button>
           <button type="button" class="btn ghost sm" id="shareBtn">🔗 <span data-i18n="share">Share link</span></button>
+          <button type="button" class="btn primary sm" id="pdfBtn">📄 <span data-i18n="pdf_report">PDF report</span></button>
         </div>
       </article>
 
@@ -269,6 +272,61 @@
   </div>
 </section>
 
+<!-- ============ BILL CHECK & HISTORY ============ -->
+<section id="billcheck" class="wrap section no-print">
+  <h2 class="sec-title"><span aria-hidden="true">🧾</span> <span data-i18n="check_title">Bill Check &amp; History</span></h2>
+  <div class="grid-2">
+
+    <article class="card" id="cmpCard">
+      <h3>⚖️ <span data-i18n="cmp_title">Actual vs Estimated</span></h3>
+      <p class="hint" data-i18n="cmp_hint">Enter your real bill to see how close the estimate is. You can then calibrate SmartWatt so future estimates match your home better.</p>
+      <div class="row">
+        <label class="field">
+          <span data-i18n="cmp_month">Bill month</span>
+          <input id="cMonth" type="month" placeholder="YYYY-MM">
+          <small class="err" role="alert"></small>
+        </label>
+        <label class="field">
+          <span data-i18n="cmp_actual">Actual bill amount</span>
+          <input id="cActual" type="number" min="0" step="0.01" inputmode="decimal">
+          <small class="err" role="alert"></small>
+        </label>
+      </div>
+      <label class="field">
+        <span data-i18n="cmp_units">Actual units (kWh, optional)</span>
+        <input id="cUnits" type="number" min="0" step="any" inputmode="decimal">
+        <small class="err" role="alert"></small>
+      </label>
+      <div id="cmpOut"></div>
+      <div class="btn-row mt">
+        <button type="button" class="btn primary sm" id="cApply" data-i18n="cmp_apply">Apply calibration</button>
+        <button type="button" class="btn ghost sm" id="cRemove" data-i18n="cmp_remove">Remove calibration</button>
+        <button type="button" class="btn ghost sm" id="cSave" data-i18n="cmp_save">Save to history</button>
+      </div>
+    </article>
+
+    <article class="card hist" id="histCard">
+      <div class="list-head">
+        <h3 style="margin-bottom:0">📅 <span data-i18n="hist_title">Monthly history</span></h3>
+        <span class="count" id="histCount">0</span>
+      </div>
+      <div class="hist-stats" id="histStats"></div>
+      <div class="chart-box short"><canvas id="chartHist" aria-label="Monthly bill history chart" role="img"></canvas></div>
+      <p class="chart-empty" id="emptyHist" data-i18n="hist_chart_empty">Save at least two months to see the trend.</p>
+      <ul class="hist-list" id="histList"></ul>
+      <div id="histEmpty" class="empty">
+        <div class="empty-ico" aria-hidden="true">📅</div>
+        <b data-i18n="hist_empty_title">No history yet</b>
+        <p data-i18n="hist_empty_text">Save a month from the comparison card to start tracking.</p>
+      </div>
+      <div class="btn-row mt">
+        <button type="button" class="btn ghost sm" id="histCsv">⬇ <span data-i18n="hist_export">Export history</span></button>
+        <button type="button" class="link-btn danger" id="histClear" data-i18n="hist_clear">Clear history</button>
+      </div>
+    </article>
+  </div>
+</section>
+
 <!-- ============ TOOLS ============ -->
 <section id="tools" class="wrap section no-print">
   <h2 class="sec-title"><span aria-hidden="true">🧰</span> <span data-i18n="tools_title">More Tools</span></h2>
@@ -297,6 +355,32 @@
       </div>
       <table class="bd" id="solarOut"><tbody></tbody></table>
     </article>
+
+    <article class="card wide" id="splitCard">
+      <h3>👥 <span data-i18n="split_title">Bill Splitter</span></h3>
+      <p class="hint" data-i18n="split_hint">Divide one electricity bill between people, flats or tenants — equally, by shares, or by sub-meter readings.</p>
+      <div class="row">
+        <label class="field">
+          <span data-i18n="split_amount">Bill amount to split</span>
+          <input id="spAmount" type="number" min="0" step="0.01" inputmode="decimal" data-i18n-ph="split_amount_ph" placeholder="Empty = estimated bill">
+        </label>
+        <label class="field">
+          <span data-i18n="split_mode">Split method</span>
+          <select id="spMode">
+            <option value="equal" data-i18n="split_equal">Equally</option>
+            <option value="share" data-i18n="split_share">By shares (rooms / members)</option>
+            <option value="meter" data-i18n="split_meter">By sub-meter readings</option>
+          </select>
+        </label>
+      </div>
+      <div id="spRows" class="sp-rows"></div>
+      <div class="btn-row">
+        <button type="button" class="btn ghost sm" id="spAdd" data-i18n="split_add">+ Add person</button>
+        <button type="button" class="btn ghost sm" id="spCopy">📋 <span data-i18n="split_copy">Copy summary</span></button>
+      </div>
+      <table class="bd" id="spOut"><tbody></tbody></table>
+      <p class="hint" id="spNote"></p>
+    </article>
   </div>
 </section>
 
@@ -319,7 +403,7 @@
   <details class="faq"><summary data-i18n="faq1_q">How is the bill calculated?</summary><p data-i18n="faq1_a">Each appliance's monthly energy is Wattage × Quantity × Hours/day × Days × Duty ÷ 1000 (in kWh). The total kWh is priced with your flat rate or slabs, then any fixed charge and VAT are added.</p></details>
   <details class="faq"><summary data-i18n="faq2_q">What is a slab (tiered) tariff?</summary><p data-i18n="faq2_a">Instead of one price for every unit, the first block of units has a lower rate, the next block a higher rate, and so on. The more you use, the higher the rate on the extra units.</p></details>
   <details class="faq"><summary data-i18n="faq3_q">Is the result exact?</summary><p data-i18n="faq3_a">No, it is an estimate. Real bills depend on actual usage, meter readings, current tariff, demand charges and any late fees. Check slab rates against your distributor's latest notice.</p></details>
-  <details class="faq"><summary data-i18n="faq4_q">Is my data saved or uploaded?</summary><p data-i18n="faq4_a">Your appliances and settings are stored only in your own browser. Nothing is sent to a server. The share link packs your data into the link itself.</p></details>
+  <details class="faq"><summary data-i18n="faq4_q">Is my data saved or uploaded?</summary><p data-i18n="faq4_a">Your appliances, settings, bill history and splitter are stored only in your own browser. Nothing is sent to a server. The share link packs only your appliances and tariff into the link itself.</p></details>
   <details class="faq"><summary data-i18n="faq5_q">Can I install it or use it offline?</summary><p data-i18n="faq5_a">Yes. SmartWatt is a Progressive Web App: use your browser's “Install” or “Add to Home Screen” option to use it like an app.</p></details>
 </section>
 
@@ -336,7 +420,7 @@
     <article class="card">
       <h3 data-i18n="team_title">The team</h3>
       <p data-i18n="team_text">SmartWatt is an ECE project built to help households understand and reduce their electricity use.</p>
-      <p class="team-names"><span data-i18n="created_by">Created by</span> <b>Taioba, Jakia, Foysal</b></p>
+      <p class="team-names"><span data-i18n="created_by">Created by</span> <b>Taioba, Jakia, Faysal</b></p>
     </article>
 
     <article class="card">
@@ -361,8 +445,8 @@
       <p class="muted" data-i18n="footer_disclaimer">Estimates only. Your actual bill may differ.</p>
     </div>
     <div class="foot-right">
-      <span class="muted"><span data-i18n="created_by">Created by</span> Taioba, Jakia, Foysal</span>
-     
+      <span class="muted"><span data-i18n="created_by">Created by</span> Taioba, Jakia, Faysal</span>
+      <a href="#top" class="no-print" data-i18n="back_top">Back to top ↑</a>
     </div>
   </div>
 </footer>
@@ -372,6 +456,8 @@
 </a>
 
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<div id="report" class="report" aria-hidden="true"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="script.js"></script>

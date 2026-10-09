@@ -109,7 +109,7 @@ const I18N = {
     faq1_q: `How is the bill calculated?`, faq1_a: `Each appliance's monthly energy is Wattage × Quantity × Hours/day × Days × Duty ÷ 1000 (in kWh). The total kWh is priced with your flat rate or slabs, then any fixed charge and VAT are added.`,
     faq2_q: `What is a slab (tiered) tariff?`, faq2_a: `Instead of one price for every unit, the first block of units has a lower rate, the next block a higher rate, and so on. The more you use, the higher the rate on the extra units.`,
     faq3_q: `Is the result exact?`, faq3_a: `No, it is an estimate. Real bills depend on actual usage, meter readings, current tariff, demand charges and any late fees. Check slab rates against your distributor's latest notice.`,
-    faq4_q: `Is my data saved or uploaded?`, faq4_a: `Your appliances and settings are stored only in your own browser. Nothing is sent to a server. The share link packs your data into the link itself.`,
+    faq4_q: `Is my data saved or uploaded?`, faq4_a: `Your appliances, settings, bill history and splitter are stored only in your own browser. Nothing is sent to a server. The share link packs only your appliances and tariff into the link itself.`,
     faq5_q: `Can I install it or use it offline?`, faq5_a: `Yes. SmartWatt is a Progressive Web App: use your browser's “Install” or “Add to Home Screen” option to use it like an app.`,
     about_title: `About SmartWatt`,
     step1_t: `Set your rate`, step1_d: `Pick a currency and a flat rate or slab tariff, plus VAT and fixed charges.`,
@@ -146,6 +146,48 @@ const I18N = {
     t_copied: `Share link copied`, t_loaded: `Loaded shared bill`, t_csv: `CSV downloaded`, t_sent: `Thanks for your feedback!`,
     t_send_fail: `Could not send right now. The form works once the site is live on Netlify.`, t_empty_export: `Add an appliance first`,
     copy_prompt: `Copy this link:`,
+    /* v3: bill check, history, splitter, report */
+    nav_check: `Bill Check`, pdf_report: `PDF report`,
+    calib_badge: `Calibrated ×{f}`,
+    check_title: `Bill Check & History`,
+    cmp_title: `Actual vs Estimated`,
+    cmp_hint: `Enter your real bill to see how close the estimate is. You can then calibrate SmartWatt so future estimates match your home better.`,
+    cmp_month: `Bill month`, cmp_actual: `Actual bill amount`, cmp_units: `Actual units (kWh, optional)`,
+    cmp_need_app: `Add appliances first to get an estimate to compare.`,
+    cmp_enter: `Enter your actual bill to compare.`,
+    cmp_est: `Estimated bill (before calibration)`, cmp_est_cal: `Estimate with calibration`, cmp_act: `Actual bill`,
+    cmp_diff: `Difference (actual − estimate)`, cmp_pct: `Difference %`,
+    cmp_est_units: `Estimated units`, cmp_act_units: `Actual units`, cmp_impl_units: `Units implied by the bill (≈)`,
+    cmp_factor: `Calibration factor`,
+    cmp_v_close: `Very close — your appliance list is realistic.`,
+    cmp_v_under: `The estimate is lower than the real bill. Some usage may be missing (more hours, extra appliances, standby power).`,
+    cmp_v_over: `The estimate is higher than the real bill. Some hours or duty cycles may be set too high.`,
+    cmp_v_far: `The gap is too large to calibrate reliably — please review your appliance list and tariff first.`,
+    cmp_apply: `Apply calibration`, cmp_remove: `Remove calibration`, cmp_save: `Save to history`,
+    err_month: `Pick a month (YYYY-MM)`, err_pos: `Enter a number greater than 0`,
+    t_calib_on: `Calibration applied (×{f})`, t_calib_off: `Calibration removed`,
+    t_hist_saved: `Saved to history`, t_hist_updated: `Month updated in history`, t_hist_deleted: `Entry removed`,
+    t_hist_cleared: `History cleared`, t_hist_full: `History is full (60 months). Delete an entry first.`,
+    t_hist_nothing: `Nothing to save yet — add appliances or an actual bill.`,
+    hist_title: `Monthly history`, hist_count_one: `{n} month`, hist_count_many: `{n} months`,
+    hist_empty_title: `No history yet`, hist_empty_text: `Save a month from the comparison card to start tracking.`,
+    hist_chart_empty: `Save at least two months to see the trend.`,
+    hist_est: `Estimated`, hist_act: `Actual`, hist_avg: `Average bill`, hist_high: `Highest month`, hist_change: `Latest change`,
+    hist_export: `Export history`, hist_clear: `Clear history`, hist_kwh_est: `{n} kWh estimated`,
+    split_title: `Bill Splitter`,
+    split_hint: `Divide one electricity bill between people, flats or tenants — equally, by shares, or by sub-meter readings.`,
+    split_amount: `Bill amount to split`, split_amount_ph: `Empty = estimated bill`, split_mode: `Split method`,
+    split_equal: `Equally`, split_share: `By shares (rooms / members)`, split_meter: `By sub-meter readings`,
+    split_name: `Name`, split_share_lbl: `Share`, split_prev: `Previous reading`, split_curr: `Current reading`,
+    split_person: `Person {n}`, split_add: `+ Add person`, split_copy: `Copy summary`, split_remove: `Remove person`,
+    split_using_est: `Splitting the estimated bill.`, split_using_amt: `Splitting the amount you entered.`,
+    split_fallback: `All shares/readings are zero, so the bill is split equally.`,
+    split_zero: `Enter a bill amount or add appliances to see the split.`,
+    split_summary_head: `SmartWatt bill split`, t_split_copied: `Split summary copied`,
+    rep_title: `Electricity Bill Report`, rep_generated: `Generated on {d}`, rep_tariff_h: `Tariff & charges`,
+    rep_col_name: `Appliance`, rep_col_room: `Room`, rep_col_load: `Load`, rep_col_usage: `Usage`, rep_col_kwh: `kWh`, rep_col_cost: `Cost`,
+    rep_appliances_h: `Appliances`, rep_history_h: `Recent history`,
+    t_pdf_hint: `In the print window, choose “Save as PDF”.`,
   },
   bn: {
     skip: `ক্যালকুলেটরে যান`, nav_calc: `ক্যালকুলেটর`, nav_analysis: `বিশ্লেষণ`, nav_tools: `টুলস`, nav_tips: `টিপস`, nav_faq: `প্রশ্নোত্তর`, nav_about: `সম্পর্কে`,
@@ -184,7 +226,7 @@ const I18N = {
     faq1_q: `বিল কীভাবে হিসাব করা হয়?`, faq1_a: `প্রতিটি যন্ত্রের মাসিক শক্তি = ওয়াট × সংখ্যা × ঘণ্টা/দিন × দিন × ডিউটি ÷ ১০০০ (kWh)। মোট kWh আপনার ফ্ল্যাট রেট বা স্ল্যাব অনুযায়ী মূল্য ধরা হয়, তারপর নির্ধারিত চার্জ ও ভ্যাট যোগ হয়।`,
     faq2_q: `স্ল্যাব (ধাপভিত্তিক) ট্যারিফ কী?`, faq2_a: `সব ইউনিটের একই দাম না হয়ে প্রথম ব্লকের ইউনিটের রেট কম, পরের ব্লকের বেশি—এভাবে বাড়তে থাকে। যত বেশি ব্যবহার, অতিরিক্ত ইউনিটের রেট তত বেশি।`,
     faq3_q: `ফলাফল কি নির্ভুল?`, faq3_a: `না, এটি একটি আনুমানিক হিসাব। প্রকৃত বিল নির্ভর করে বাস্তব ব্যবহার, মিটার রিডিং, বর্তমান ট্যারিফ, ডিমান্ড চার্জ ও বিলম্ব ফির ওপর। স্ল্যাব রেট আপনার বিতরণ সংস্থার সর্বশেষ বিজ্ঞপ্তির সাথে মিলিয়ে নিন।`,
-    faq4_q: `আমার তথ্য কি সংরক্ষিত বা আপলোড হয়?`, faq4_a: `আপনার যন্ত্র ও সেটিংস শুধু আপনার নিজের ব্রাউজারে সংরক্ষিত থাকে। কোনো সার্ভারে পাঠানো হয় না। শেয়ার লিংকে তথ্য লিংকের ভেতরেই থাকে।`,
+    faq4_q: `আমার তথ্য কি সংরক্ষিত বা আপলোড হয়?`, faq4_a: `আপনার যন্ত্র, সেটিংস, বিলের ইতিহাস ও ভাগের তথ্য শুধু আপনার নিজের ব্রাউজারে সংরক্ষিত থাকে। কোনো সার্ভারে পাঠানো হয় না। শেয়ার লিংকে শুধু যন্ত্র ও ট্যারিফের তথ্য লিংকের ভেতরেই থাকে।`,
     faq5_q: `এটি কি ইনস্টল করা বা অফলাইনে চালানো যায়?`, faq5_a: `হ্যাঁ। SmartWatt একটি প্রগ্রেসিভ ওয়েব অ্যাপ: ব্রাউজারের “Install” বা “Add to Home Screen” ব্যবহার করে অ্যাপের মতো চালাতে পারবেন।`,
     about_title: `SmartWatt সম্পর্কে`,
     step1_t: `রেট ঠিক করুন`, step1_d: `মুদ্রা, ফ্ল্যাট রেট বা স্ল্যাব ট্যারিফ এবং ভ্যাট ও নির্ধারিত চার্জ বেছে নিন।`,
@@ -221,14 +263,72 @@ const I18N = {
     t_copied: `শেয়ার লিংক কপি হয়েছে`, t_loaded: `শেয়ার করা বিল লোড হয়েছে`, t_csv: `CSV ডাউনলোড হয়েছে`, t_sent: `মতামতের জন্য ধন্যবাদ!`,
     t_send_fail: `এখন পাঠানো যায়নি। সাইট Netlify-তে লাইভ হলে ফর্মটি কাজ করবে।`, t_empty_export: `আগে একটি যন্ত্র যোগ করুন`,
     copy_prompt: `এই লিংকটি কপি করুন:`,
+    /* v3: bill check, history, splitter, report */
+    nav_check: `বিল যাচাই`, pdf_report: `পিডিএফ রিপোর্ট`,
+    calib_badge: `ক্যালিব্রেটেড ×{f}`,
+    check_title: `বিল যাচাই ও ইতিহাস`,
+    cmp_title: `প্রকৃত বনাম আনুমানিক`,
+    cmp_hint: `আপনার প্রকৃত বিল দিন এবং দেখুন হিসাব কতটা কাছাকাছি। তারপর ক্যালিব্রেট করলে ভবিষ্যতের হিসাব আপনার বাসার সাথে আরও মিলবে।`,
+    cmp_month: `বিলের মাস`, cmp_actual: `প্রকৃত বিলের পরিমাণ`, cmp_units: `প্রকৃত ইউনিট (kWh, ঐচ্ছিক)`,
+    cmp_need_app: `তুলনার জন্য আগে যন্ত্র যোগ করুন।`,
+    cmp_enter: `তুলনা করতে প্রকৃত বিল লিখুন।`,
+    cmp_est: `আনুমানিক বিল (ক্যালিব্রেশনের আগে)`, cmp_est_cal: `ক্যালিব্রেশনসহ আনুমানিক বিল`, cmp_act: `প্রকৃত বিল`,
+    cmp_diff: `পার্থক্য (প্রকৃত − আনুমানিক)`, cmp_pct: `পার্থক্য %`,
+    cmp_est_units: `আনুমানিক ইউনিট`, cmp_act_units: `প্রকৃত ইউনিট`, cmp_impl_units: `বিল অনুযায়ী আনুমানিক ইউনিট (≈)`,
+    cmp_factor: `ক্যালিব্রেশন ফ্যাক্টর`,
+    cmp_v_close: `খুবই কাছাকাছি — আপনার যন্ত্রের তালিকা বাস্তবসম্মত।`,
+    cmp_v_under: `আনুমানিক বিল প্রকৃত বিলের চেয়ে কম। কিছু ব্যবহার বাদ পড়তে পারে (বেশি ঘণ্টা, বাড়তি যন্ত্র, স্ট্যান্ডবাই বিদ্যুৎ)।`,
+    cmp_v_over: `আনুমানিক বিল প্রকৃত বিলের চেয়ে বেশি। কিছু ঘণ্টা বা ডিউটি সাইকেল বেশি ধরা হয়ে থাকতে পারে।`,
+    cmp_v_far: `পার্থক্য এত বেশি যে নির্ভরযোগ্য ক্যালিব্রেশন সম্ভব নয় — আগে যন্ত্রের তালিকা ও ট্যারিফ দেখুন।`,
+    cmp_apply: `ক্যালিব্রেশন প্রয়োগ`, cmp_remove: `ক্যালিব্রেশন সরান`, cmp_save: `ইতিহাসে সংরক্ষণ`,
+    err_month: `মাস বেছে নিন (YYYY-MM)`, err_pos: `০-এর চেয়ে বড় সংখ্যা দিন`,
+    t_calib_on: `ক্যালিব্রেশন প্রয়োগ হয়েছে (×{f})`, t_calib_off: `ক্যালিব্রেশন সরানো হয়েছে`,
+    t_hist_saved: `ইতিহাসে সংরক্ষিত`, t_hist_updated: `ইতিহাসে মাসটি আপডেট হয়েছে`, t_hist_deleted: `এন্ট্রি মুছে ফেলা হয়েছে`,
+    t_hist_cleared: `ইতিহাস মুছে ফেলা হয়েছে`, t_hist_full: `ইতিহাস পূর্ণ (৬০ মাস)। আগে একটি এন্ট্রি মুছুন।`,
+    t_hist_nothing: `সংরক্ষণের মতো কিছু নেই — যন্ত্র বা প্রকৃত বিল যোগ করুন।`,
+    hist_title: `মাসিক ইতিহাস`, hist_count_one: `{n} মাস`, hist_count_many: `{n} মাস`,
+    hist_empty_title: `এখনো কোনো ইতিহাস নেই`, hist_empty_text: `ট্র্যাকিং শুরু করতে তুলনার কার্ড থেকে একটি মাস সংরক্ষণ করুন।`,
+    hist_chart_empty: `ট্রেন্ড দেখতে অন্তত দুটি মাস সংরক্ষণ করুন।`,
+    hist_est: `আনুমানিক`, hist_act: `প্রকৃত`, hist_avg: `গড় বিল`, hist_high: `সর্বোচ্চ মাস`, hist_change: `সর্বশেষ পরিবর্তন`,
+    hist_export: `ইতিহাস এক্সপোর্ট`, hist_clear: `ইতিহাস মুছুন`, hist_kwh_est: `আনুমানিক {n} kWh`,
+    split_title: `বিল ভাগ করুন`,
+    split_hint: `একটি বিদ্যুৎ বিল মানুষ, ফ্ল্যাট বা ভাড়াটিয়াদের মধ্যে ভাগ করুন — সমান, অংশ অনুযায়ী বা সাব-মিটার রিডিং অনুযায়ী।`,
+    split_amount: `ভাগ করার বিলের পরিমাণ`, split_amount_ph: `খালি = আনুমানিক বিল`, split_mode: `ভাগের পদ্ধতি`,
+    split_equal: `সমান ভাগে`, split_share: `অংশ অনুযায়ী (কক্ষ / সদস্য)`, split_meter: `সাব-মিটার রিডিং অনুযায়ী`,
+    split_name: `নাম`, split_share_lbl: `অংশ`, split_prev: `আগের রিডিং`, split_curr: `বর্তমান রিডিং`,
+    split_person: `ব্যক্তি {n}`, split_add: `+ ব্যক্তি যোগ করুন`, split_copy: `সারাংশ কপি`, split_remove: `ব্যক্তি সরান`,
+    split_using_est: `আনুমানিক বিল ভাগ হচ্ছে।`, split_using_amt: `আপনার দেওয়া পরিমাণ ভাগ হচ্ছে।`,
+    split_fallback: `সব অংশ/রিডিং শূন্য, তাই বিল সমান ভাগ করা হয়েছে।`,
+    split_zero: `ভাগ দেখতে বিলের পরিমাণ দিন বা যন্ত্র যোগ করুন।`,
+    split_summary_head: `SmartWatt বিল ভাগ`, t_split_copied: `ভাগের সারাংশ কপি হয়েছে`,
+    rep_title: `বিদ্যুৎ বিলের রিপোর্ট`, rep_generated: `তৈরি হয়েছে {d}`, rep_tariff_h: `ট্যারিফ ও চার্জ`,
+    rep_col_name: `যন্ত্র`, rep_col_room: `কক্ষ`, rep_col_load: `লোড`, rep_col_usage: `ব্যবহার`, rep_col_kwh: `kWh`, rep_col_cost: `খরচ`,
+    rep_appliances_h: `যন্ত্রপাতি`, rep_history_h: `সাম্প্রতিক ইতিহাস`,
+    t_pdf_hint: `প্রিন্ট উইন্ডোতে “Save as PDF” বেছে নিন।`,
   },
 };
 
 /* ================= state ================= */
+const MONTH_RE = /^\d{4}-(0[1-9]|1[0-2])$/;
+const HIST_MAX = 60;
+const CALIB_MIN = 0.2;
+const CALIB_MAX = 5;
+const SPLIT_MODES = ['equal', 'share', 'meter'];
+const SPLIT_MIN = 2;
+const SPLIT_MAX = 12;
+
+const newPerson = () => ({ id: uid(), name: '', share: 1, prev: 0, curr: 0 });
+
 const defaults = () => ({
   currency: 'BDT', mode: 'flat', rate: 8.5, vat: 5, fixed: 0, billingDays: 30, budget: 0,
   slabs: DEFAULT_SLABS(), appliances: [], lang: 'en', theme: 'dark',
+  calib: 1, calibOn: false,
+  history: [],
+  cmp: { month: '', actual: '', units: '' },
+  split: { mode: 'equal', amount: '', people: [newPerson(), newPerson()] },
 });
+
+const cleanNumStr = v => { const n = parseFloat(v); return Number.isFinite(n) && n > 0 ? String(n) : ''; };
 
 function sanitize(src, base) {
   const s = Object.assign({}, base);
@@ -260,6 +360,61 @@ function sanitize(src, base) {
       room: ROOMS.includes(a && a.room) ? a.room : 'other',
     }));
   }
+  // calibration
+  const cf = parseFloat(src.calib);
+  const cfOk = Number.isFinite(cf) && cf >= CALIB_MIN && cf <= CALIB_MAX;
+  if (cfOk) s.calib = cf;
+  s.calibOn = src.calibOn === true && cfOk;
+
+  // monthly history (one entry per month)
+  if (Array.isArray(src.history)) {
+    const seen = new Set();
+    s.history = src.history.slice(0, 200).map(e => ({
+      id: String((e && e.id) || uid()),
+      month: e && MONTH_RE.test(e.month) ? e.month : '',
+      cur: e && CURRENCIES[e.cur] ? e.cur : 'BDT',
+      est: Math.max(0, toNum(e && e.est)),
+      actual: Math.max(0, toNum(e && e.actual)),
+      kwh: Math.max(0, toNum(e && e.kwh)),
+      akwh: Math.max(0, toNum(e && e.akwh)),
+    })).filter(e => {
+      if (!e.month || !(e.est > 0 || e.actual > 0) || seen.has(e.month)) return false;
+      seen.add(e.month);
+      return true;
+    }).sort((a, b) => a.month.localeCompare(b.month)).slice(-HIST_MAX);
+  }
+
+  // last comparison inputs
+  if (src.cmp && typeof src.cmp === 'object') {
+    s.cmp = {
+      month: MONTH_RE.test(src.cmp.month) ? src.cmp.month : '',
+      actual: cleanNumStr(src.cmp.actual),
+      units: cleanNumStr(src.cmp.units),
+    };
+  }
+
+  // bill splitter
+  if (src.split && typeof src.split === 'object') {
+    const sp = src.split;
+    const people = Array.isArray(sp.people) && sp.people.length >= SPLIT_MIN && sp.people.length <= SPLIT_MAX
+      ? sp.people.map(p => {
+        const share = parseFloat(p && p.share);
+        return {
+          id: String((p && p.id) || uid()),
+          name: String((p && p.name) || '').slice(0, 24),
+          share: Number.isFinite(share) ? clamp(share, 0, 1000) : 1,
+          prev: Math.max(0, toNum(p && p.prev)),
+          curr: Math.max(0, toNum(p && p.curr)),
+        };
+      })
+      : s.split.people;
+    s.split = {
+      mode: SPLIT_MODES.includes(sp.mode) ? sp.mode : 'equal',
+      amount: cleanNumStr(sp.amount),
+      people,
+    };
+  }
+
   if (src.lang === 'bn' || src.lang === 'en') s.lang = src.lang;
   if (src.theme === 'light' || src.theme === 'dark') s.theme = src.theme;
   return s;
@@ -325,7 +480,9 @@ function toast(msg, action) {
 }
 
 /* ================= calculations ================= */
-const itemKwh = a => (a.w * a.q * a.h * a.d * (a.duty / 100)) / 1000;
+const baseKwh = a => (a.w * a.q * a.h * a.d * (a.duty / 100)) / 1000;
+const calibFactor = () => (state.calibOn ? state.calib : 1);
+const itemKwh = a => baseKwh(a) * calibFactor();
 
 function energyCharge(kwh) {
   if (state.mode === 'slab') {
@@ -355,9 +512,10 @@ function billFor(kwh) {
 function compute() {
   const items = state.appliances.map(a => Object.assign({}, a, { kwh: itemKwh(a) }));
   const total = items.reduce((s, a) => s + a.kwh, 0);
+  const raw = state.appliances.reduce((s, a) => s + baseKwh(a), 0); // before calibration
   const bill = billFor(total);
   items.forEach(a => { a.cost = total > 0 ? bill.total * a.kwh / total : 0; });
-  return { items, total, bill };
+  return { items, total, raw, bill };
 }
 
 /* ================= DOM refs ================= */
@@ -681,6 +839,10 @@ function renderSummary(c) {
   $('#stAvg').textContent = total > 0 ? money(bill.total / total) : '—';
   $('#bdTable tbody').innerHTML = bdHtml(total, bill);
 
+  const badge = $('#calibBadge');
+  badge.hidden = !state.calibOn;
+  if (state.calibOn) badge.textContent = t('calib_badge', { f: num(state.calib, 2) });
+
   const box = $('#budgetBox');
   if (state.budget > 0) {
     box.hidden = false;
@@ -835,6 +997,536 @@ function renderTools(c) {
     bdRow(t('s_co2'), `${num(gen * 12 * CO2_FACTOR, 0)} kg`);
 }
 
+/* ================= v3 helpers ================= */
+const currentMonth = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); };
+const moneyC = (n, cur) => (CURRENCIES[cur] ? CURRENCIES[cur].sym : sym()) + ' ' + num(n);
+const signedMoney = n => (n >= 0 ? '+ ' : '− ') + money(Math.abs(n));
+const signedPct = p => (p >= 0 ? '+' : '−') + num(Math.abs(p), 1) + '%';
+
+function monthLabel(ym) {
+  const [y, m] = ym.split('-').map(Number);
+  try {
+    return localize(new Date(Date.UTC(y, m - 1, 1)).toLocaleDateString(
+      state.lang === 'bn' ? 'bn-BD' : 'en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' }));
+  } catch (e) { return localize(ym); }
+}
+
+function downloadCsv(rows, filename) {
+  const q = v => '"' + String(v).replace(/"/g, '""') + '"';
+  const csv = '﻿' + rows.map(r => r.map(q).join(',')).join('\r\n');
+  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/* ================= actual vs estimated + calibration ================= */
+// Finds the kWh that would produce a given bill (the tariff is monotonic, so bisection works).
+function kwhForBill(target) {
+  if (!(target > 0)) return 0;
+  if (billFor(1e-9).total >= target) return 0;
+  let lo = 0, hi = 1, guard = 0;
+  while (billFor(hi).total < target && guard++ < 60) hi *= 2;
+  if (billFor(hi).total < target) return NaN;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (billFor(mid).total < target) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+function cmpCalc() {
+  const c = compute();
+  const raw = c.raw;
+  const rawBill = billFor(raw).total;
+  const actual = parseFloat($('#cActual').value);
+  const uIn = parseFloat($('#cUnits').value);
+  const hasActual = Number.isFinite(actual) && actual > 0;
+  const hasUnits = Number.isFinite(uIn) && uIn > 0;
+  let actualKwh = null, implied = false;
+  if (hasUnits) actualKwh = uIn;
+  else if (hasActual) {
+    const k = kwhForBill(actual);
+    if (Number.isFinite(k) && k > 0) { actualKwh = k; implied = true; }
+  }
+  const factor = raw > 0 && actualKwh ? actualKwh / raw : null;
+  return { raw, rawBill, actual: hasActual ? actual : null, hasActual, actualKwh, implied, factor };
+}
+
+function renderCompare() {
+  const r = cmpCalc();
+  const rows = [];
+  let verdict = '', vcls = '';
+  const canApply = r.factor != null && r.factor >= CALIB_MIN && r.factor <= CALIB_MAX;
+
+  if (!(r.raw > 0)) {
+    verdict = t('cmp_need_app');
+  } else if (!r.hasActual && !r.actualKwh) {
+    verdict = t('cmp_enter');
+  } else {
+    rows.push(bdRow(t('cmp_est'), money(r.rawBill)));
+    if (state.calibOn) rows.push(bdRow(t('cmp_est_cal'), money(billFor(r.raw * state.calib).total)));
+    let pct = null;
+    if (r.hasActual) {
+      const diff = r.actual - r.rawBill;
+      pct = r.rawBill > 0 ? diff / r.rawBill * 100 : null;
+      rows.push(bdRow(t('cmp_act'), money(r.actual)));
+      rows.push(bdRow(t('cmp_diff'), signedMoney(diff)));
+      if (pct != null) rows.push(bdRow(t('cmp_pct'), signedPct(pct)));
+    }
+    rows.push(bdRow(t('cmp_est_units'), `${num(r.raw, 1)} kWh`));
+    if (r.actualKwh) rows.push(bdRow(t(r.implied ? 'cmp_impl_units' : 'cmp_act_units'), `${num(r.actualKwh, 1)} kWh`));
+    if (r.factor != null) {
+      rows.push(bdRow(t('cmp_factor'), '× ' + num(r.factor, 2)));
+      if (pct == null) pct = (r.factor - 1) * 100;
+    }
+    if (pct != null) {
+      if (Math.abs(pct) <= 10) { verdict = t('cmp_v_close'); vcls = 'good'; }
+      else if (!canApply) { verdict = t('cmp_v_far'); vcls = 'bad'; }
+      else { verdict = t(pct > 0 ? 'cmp_v_under' : 'cmp_v_over'); vcls = 'warn'; }
+    }
+  }
+  $('#cmpOut').innerHTML =
+    (rows.length ? `<table class="bd"><tbody>${rows.join('')}</tbody></table>` : '') +
+    (verdict ? `<p class="verdict ${vcls}">${esc(verdict)}</p>` : '');
+  $('#cApply').disabled = !canApply;
+  $('#cRemove').disabled = !state.calibOn;
+}
+
+$('#cMonth').addEventListener('input', e => {
+  state.cmp.month = MONTH_RE.test(e.target.value) ? e.target.value : '';
+  setErr(e.target, '');
+  save();
+});
+[['cActual', 'actual'], ['cUnits', 'units']].forEach(([id, key]) => {
+  $('#' + id).addEventListener('input', e => {
+    state.cmp[key] = cleanNumStr(e.target.value);
+    setErr(e.target, '');
+    save();
+    renderCompare();
+  });
+});
+
+$('#cApply').addEventListener('click', () => {
+  const r = cmpCalc();
+  if (r.factor == null || r.factor < CALIB_MIN || r.factor > CALIB_MAX) return;
+  state.calib = Math.round(r.factor * 1000) / 1000;
+  state.calibOn = true;
+  update();
+  toast(t('t_calib_on', { f: num(state.calib, 2) }));
+});
+
+$('#cRemove').addEventListener('click', () => {
+  state.calibOn = false;
+  update();
+  toast(t('t_calib_off'));
+});
+
+/* ================= monthly history ================= */
+const histVal = e => (e.actual > 0 ? e.actual : e.est);
+const sortHistory = () => state.history.sort((a, b) => a.month.localeCompare(b.month));
+let chartHist = null;
+
+function saveHistory() {
+  const mEl = $('#cMonth');
+  const month = mEl.value.trim();
+  let ok = true;
+  if (!MONTH_RE.test(month)) { setErr(mEl, t('err_month')); ok = false; } else setErr(mEl, '');
+  const optional = el => {
+    const raw = el.value.trim();
+    if (raw === '') { setErr(el, ''); return 0; }
+    const v = parseFloat(raw);
+    if (!(v > 0)) { setErr(el, t('err_pos')); ok = false; return 0; }
+    setErr(el, '');
+    return v;
+  };
+  const actual = optional($('#cActual'));
+  const akwh = optional($('#cUnits'));
+  if (!ok) return;
+
+  const c = compute();
+  if (!(c.bill.total > 0) && !(actual > 0)) { toast(t('t_hist_nothing')); return; }
+  const entry = {
+    id: uid(), month, cur: state.currency,
+    est: +c.bill.total.toFixed(2), actual: +actual.toFixed(2), kwh: +c.total.toFixed(2), akwh: +akwh.toFixed(2),
+  };
+  const idx = state.history.findIndex(e => e.month === month);
+  if (idx >= 0) {
+    entry.id = state.history[idx].id;
+    state.history[idx] = entry;
+    toast(t('t_hist_updated'));
+  } else {
+    if (state.history.length >= HIST_MAX) { toast(t('t_hist_full')); return; }
+    state.history.push(entry);
+    toast(t('t_hist_saved'));
+  }
+  sortHistory();
+  update();
+}
+
+$('#cSave').addEventListener('click', saveHistory);
+
+function renderHistory() {
+  const desc = state.history.slice().sort((a, b) => b.month.localeCompare(a.month));
+  const n = desc.length;
+  $('#histCount').textContent = t(n === 1 ? 'hist_count_one' : 'hist_count_many', { n: localize(n) });
+  $('#histEmpty').hidden = n > 0;
+  $('#histCsv').hidden = n === 0;
+  $('#histClear').hidden = n === 0;
+
+  $('#histList').innerHTML = desc.map(e => `
+    <li class="hist-item" data-id="${esc(e.id)}">
+      <div class="hi-main">
+        <b>${esc(monthLabel(e.month))}</b>
+        <small>${esc(t('hist_kwh_est', { n: num(e.kwh, 1) }) + (e.akwh > 0 ? ` · ${num(e.akwh, 1)} kWh (${t('hist_act')})` : ''))}</small>
+      </div>
+      <div class="hi-nums">
+        <span>${esc(t('hist_est'))}: ${esc(moneyC(e.est, e.cur))}</span>
+        <span>${esc(t('hist_act'))}: ${esc(e.actual > 0 ? moneyC(e.actual, e.cur) : '—')}</span>
+      </div>
+      <button type="button" class="mini del" data-act="hdel" aria-label="${esc(t('btn_del'))}">✕</button>
+    </li>`).join('');
+
+  // stats and chart only use entries in the current currency (so amounts are comparable)
+  const cur = state.history.filter(e => e.cur === state.currency);
+  const vals = cur.map(histVal);
+  const stats = [];
+  if (cur.length) {
+    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+    let hi = 0;
+    vals.forEach((v, i) => { if (v > vals[hi]) hi = i; });
+    let change = '—';
+    if (vals.length > 1 && vals[vals.length - 2] > 0) {
+      change = signedPct((vals[vals.length - 1] - vals[vals.length - 2]) / vals[vals.length - 2] * 100);
+    }
+    stats.push([t('hist_avg'), money(avg)]);
+    stats.push([t('hist_high'), `${monthLabel(cur[hi].month)} · ${money(vals[hi])}`]);
+    stats.push([t('hist_change'), change]);
+  }
+  const statBox = $('#histStats');
+  statBox.hidden = stats.length === 0;
+  statBox.innerHTML = stats.map(([l, v]) => `<div class="stat"><small>${esc(l)}</small><b>${esc(v)}</b></div>`).join('');
+
+  const noLib = typeof Chart === 'undefined';
+  const show = cur.length >= 2 && !noLib;
+  $('#histCard').classList.toggle('no-data', !show);
+  $('#emptyHist').hidden = n === 0;
+  $('#emptyHist').textContent = cur.length >= 2 && noLib ? t('chart_offline') : t('hist_chart_empty');
+  if (chartHist) { chartHist.destroy(); chartHist = null; }
+  if (!show) return;
+
+  const css = getComputedStyle(document.documentElement);
+  Chart.defaults.color = css.getPropertyValue('--muted').trim();
+  Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+  const grid = css.getPropertyValue('--border').trim();
+  const accent = css.getPropertyValue('--accent').trim() || '#ffc93c';
+  chartHist = new Chart($('#chartHist'), {
+    type: 'line',
+    data: {
+      labels: cur.map(e => monthLabel(e.month)),
+      datasets: [
+        { label: t('hist_est'), data: cur.map(e => e.est), borderColor: accent, backgroundColor: accent, tension: 0.25, pointRadius: 3 },
+        { label: t('hist_act'), data: cur.map(e => (e.actual > 0 ? e.actual : null)), borderColor: '#3aa8d8', backgroundColor: '#3aa8d8', tension: 0.25, pointRadius: 3, spanGaps: true },
+      ],
+    },
+    options: {
+      maintainAspectRatio: false, animation: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${money(ctx.parsed.y)}` } },
+      },
+      scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { color: grid } } },
+    },
+  });
+}
+
+$('#histList').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act="hdel"]');
+  if (!btn) return;
+  const id = btn.closest('.hist-item').dataset.id;
+  const idx = state.history.findIndex(h => h.id === id);
+  if (idx < 0) return;
+  const removed = state.history.splice(idx, 1)[0];
+  update();
+  toast(t('t_hist_deleted'), {
+    label: t('t_undo'),
+    fn: () => {
+      if (state.history.some(h => h.month === removed.month)) return;
+      state.history.push(removed);
+      sortHistory();
+      update();
+    },
+  });
+});
+
+$('#histClear').addEventListener('click', () => {
+  if (!state.history.length) return;
+  const backup = state.history.slice();
+  state.history = [];
+  update();
+  toast(t('t_hist_cleared'), { label: t('t_undo'), fn: () => { state.history = backup; update(); } });
+});
+
+$('#histCsv').addEventListener('click', () => {
+  if (!state.history.length) return;
+  const rows = [['Month', 'Currency', 'Estimated bill', 'Actual bill', 'Estimated kWh', 'Actual kWh']];
+  state.history.forEach(e => rows.push([e.month, e.cur, e.est.toFixed(2), e.actual > 0 ? e.actual.toFixed(2) : '', e.kwh.toFixed(2), e.akwh > 0 ? e.akwh.toFixed(2) : '']));
+  downloadCsv(rows, 'smartwatt-history.csv');
+  toast(t('t_csv'));
+});
+
+/* ================= bill splitter ================= */
+const personName = (p, i) => p.name.trim() || t('split_person', { n: localize(i + 1) });
+
+// Splits `total` by weights in whole cents (largest-remainder), so the parts add up exactly.
+function allocate(total, weights) {
+  const cents = Math.round(total * 100);
+  const sum = weights.reduce((a, b) => a + b, 0);
+  const w = sum > 0 ? weights : weights.map(() => 1);
+  const s = sum > 0 ? sum : w.length;
+  const raw = w.map(x => cents * x / s);
+  const base = raw.map(Math.floor);
+  const rem = cents - base.reduce((a, b) => a + b, 0);
+  const order = raw.map((r, i) => ({ i, f: r - base[i] })).sort((a, b) => b.f - a.f || a.i - b.i);
+  for (let k = 0; k < rem; k++) base[order[k % order.length].i]++;
+  return base.map(c => c / 100);
+}
+
+function splitData(c) {
+  const sp = state.split;
+  const amt = parseFloat(sp.amount);
+  const usingEst = !(amt > 0);
+  const total = usingEst ? (c || compute()).bill.total : amt;
+  const weights = sp.people.map(p => (sp.mode === 'share' ? Math.max(0, p.share) : sp.mode === 'meter' ? Math.max(0, p.curr - p.prev) : 1));
+  const sum = weights.reduce((a, b) => a + b, 0);
+  const fallback = sp.mode !== 'equal' && !(sum > 0);
+  const amounts = total > 0 ? allocate(total, fallback ? weights.map(() => 1) : weights) : weights.map(() => 0);
+  const rows = sp.people.map((p, i) => ({
+    name: personName(p, i), amount: amounts[i], pct: total > 0 ? amounts[i] / total * 100 : 0, weight: weights[i],
+  }));
+  return { total, usingEst, fallback, rows, mode: sp.mode };
+}
+
+function renderSplitRows() {
+  const sp = state.split;
+  const mode = sp.mode;
+  $('#spMode').value = mode;
+  $('#spAmount').value = sp.amount;
+  const head = mode === 'equal' ? '' :
+    `<div class="sp-row sp-head m-${mode}"><span class="sp-name">${esc(t('split_name'))}</span>` +
+    (mode === 'share'
+      ? `<span>${esc(t('split_share_lbl'))}</span>`
+      : `<span>${esc(t('split_prev'))}</span><span>${esc(t('split_curr'))}</span>`) +
+    '<span class="sp-x"></span></div>';
+  const numInput = (k, v, label) =>
+    `<input type="number" min="0" step="any" inputmode="decimal" data-k="${k}" value="${v}" aria-label="${esc(label)}">`;
+  $('#spRows').innerHTML = head + sp.people.map((p, i) => `
+    <div class="sp-row m-${mode}" data-id="${esc(p.id)}">
+      <input class="sp-name" type="text" maxlength="24" data-k="name" value="${esc(p.name)}" placeholder="${esc(t('split_person', { n: localize(i + 1) }))}" aria-label="${esc(t('split_name') + ' ' + localize(i + 1))}">
+      ${mode === 'share' ? numInput('share', p.share, t('split_share_lbl')) : ''}
+      ${mode === 'meter' ? numInput('prev', p.prev, t('split_prev')) + numInput('curr', p.curr, t('split_curr')) : ''}
+      <button type="button" class="mini del" data-act="rm" aria-label="${esc(t('split_remove'))}"${sp.people.length <= SPLIT_MIN ? ' disabled' : ''}>✕</button>
+    </div>`).join('');
+  $('#spAdd').disabled = sp.people.length >= SPLIT_MAX;
+}
+
+function renderSplitOut(c) {
+  const d = splitData(c);
+  const rows = [];
+  if (d.total > 0) {
+    d.rows.forEach(r => {
+      const extra = d.mode === 'meter' ? ` · ${num(r.weight, 1)} kWh` : d.mode === 'share' ? ` · ×${nf(r.weight)}` : '';
+      rows.push(bdRow(`${r.name}${extra} · ${num(r.pct, 1)}%`, money(r.amount)));
+    });
+    rows.push(bdRow(t('bd_total'), money(d.total), 'total'));
+  }
+  $('#spOut tbody').innerHTML = rows.join('');
+  $('#spNote').textContent = d.total > 0
+    ? (d.fallback ? t('split_fallback') : t(d.usingEst ? 'split_using_est' : 'split_using_amt'))
+    : t('split_zero');
+}
+
+$('#spMode').addEventListener('change', e => {
+  state.split.mode = SPLIT_MODES.includes(e.target.value) ? e.target.value : 'equal';
+  renderSplitRows();
+  renderSplitOut();
+  save();
+});
+
+$('#spAmount').addEventListener('input', e => {
+  state.split.amount = cleanNumStr(e.target.value);
+  renderSplitOut();
+  save();
+});
+
+$('#spRows').addEventListener('input', e => {
+  const inp = e.target.closest('input[data-k]');
+  if (!inp) return;
+  const p = state.split.people.find(x => x.id === inp.closest('.sp-row').dataset.id);
+  if (!p) return;
+  const k = inp.dataset.k;
+  if (k === 'name') p.name = inp.value.slice(0, 24);
+  else if (k === 'share') p.share = clamp(toNum(inp.value), 0, 1000);
+  else p[k] = Math.max(0, toNum(inp.value));
+  renderSplitOut();
+  save();
+});
+
+$('#spRows').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-act="rm"]');
+  if (!btn || btn.disabled || state.split.people.length <= SPLIT_MIN) return;
+  const id = btn.closest('.sp-row').dataset.id;
+  state.split.people = state.split.people.filter(p => p.id !== id);
+  renderSplitRows();
+  renderSplitOut();
+  save();
+});
+
+$('#spAdd').addEventListener('click', () => {
+  if (state.split.people.length >= SPLIT_MAX) return;
+  state.split.people.push(newPerson());
+  renderSplitRows();
+  renderSplitOut();
+  save();
+});
+
+$('#spCopy').addEventListener('click', async () => {
+  const d = splitData();
+  if (!(d.total > 0)) { toast(t('split_zero')); return; }
+  const lines = [`${t('split_summary_head')} — ${money(d.total)}`];
+  d.rows.forEach(r => lines.push(`${r.name}: ${money(r.amount)}`));
+  const text = lines.join('\n');
+  try {
+    await navigator.clipboard.writeText(text);
+    toast(t('t_split_copied'));
+  } catch (e) {
+    window.prompt(t('copy_prompt'), text);
+  }
+});
+
+/* ================= PDF report (uses the browser's "Save as PDF") ================= */
+function buildReport() {
+  const c = compute();
+  const days = state.billingDays || 30;
+  const now = new Date();
+  let dateStr;
+  try {
+    dateStr = localize(now.toLocaleDateString(state.lang === 'bn' ? 'bn-BD' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }));
+  } catch (e) { dateStr = now.toISOString().slice(0, 10); }
+
+  const tile = (l, v, cls) => `<div class="rp-tile${cls ? ' ' + cls : ''}"><small>${esc(l)}</small><b>${esc(v)}</b></div>`;
+  const kv = (k, v) => `<tr><td>${esc(k)}</td><td class="r">${esc(v)}</td></tr>`;
+  const items = c.items.slice().sort((a, b) => b.cost - a.cost);
+
+  // tariff & charges
+  const tar = [];
+  if (state.mode === 'flat') tar.push(kv(t('unit_price'), money(state.rate)));
+  else {
+    tar.push(kv(t('mode_slab'), ''));
+    let prev = 0;
+    state.slabs.forEach((s, i) => {
+      const last = i === state.slabs.length - 1;
+      tar.push(kv(last ? t('slab_above', { n: nf(prev) }) : `${nf(prev)}–${nf(s.upto)} kWh`, `${money(s.rate)} / kWh`));
+      if (!last) prev = s.upto;
+    });
+  }
+  tar.push(kv(t('vat'), nf(state.vat)));
+  if (state.fixed) tar.push(kv(t('fixed'), money(state.fixed)));
+  tar.push(kv(t('billing_days'), localize(days)));
+  if (state.calibOn) tar.push(kv(t('calib_badge', { f: num(state.calib, 2) }), ''));
+
+  const appRows = items.map(a => `<tr>
+    <td>${esc(a.icon)} ${esc(a.name)}</td><td>${esc(t('room_' + a.room))}</td>
+    <td>${esc(localize(`${nf(a.w)}W × ${a.q}`))}</td>
+    <td>${esc(localize(`${nf(a.h)}h × ${a.d} ${t('days_unit')}${a.duty < 100 ? ' · ' + nf(a.duty) + '%' : ''}`))}</td>
+    <td class="r">${esc(num(a.kwh, 1))}</td><td class="r">${esc(money(a.cost))}</td></tr>`).join('');
+
+  const bars = rows => rows.map(r => `<div class="rp-bar"><div class="rp-bar-l"><span>${esc(r.label)}</span><b>${esc(r.val)}</b></div><div class="rp-bar-t"><i style="width:${Math.max(1, Math.min(100, r.pct)).toFixed(1)}%"></i></div></div>`).join('');
+  const costBars = items.filter(i => i.cost > 0).slice(0, 8).map(i => {
+    const pct = c.bill.total > 0 ? i.cost / c.bill.total * 100 : 0;
+    return { label: i.name, pct, val: `${money(i.cost)} (${num(pct, 0)}%)` };
+  });
+  const roomBars = ROOMS
+    .map(r => ({ r, kwh: items.filter(i => i.room === r).reduce((s, i) => s + i.kwh, 0) }))
+    .filter(x => x.kwh > 0).sort((a, b) => b.kwh - a.kwh)
+    .map(x => {
+      const pct = c.total > 0 ? x.kwh / c.total * 100 : 0;
+      return { label: t('room_' + x.r), pct, val: `${num(x.kwh, 1)} kWh (${num(pct, 0)}%)` };
+    });
+
+  const insights = $$('#insightList li').map(li => `<li>${esc(li.textContent)}</li>`).join('');
+
+  const cmpHtml = $('#cmpOut table') ? `<h2>${esc(t('cmp_title'))}</h2>${$('#cmpOut').innerHTML}` : '';
+
+  const hist = state.history.slice().sort((a, b) => b.month.localeCompare(a.month)).slice(0, 12);
+  const histHtml = hist.length ? `<h2>${esc(t('rep_history_h'))}</h2><table><thead><tr><th></th><th class="r">${esc(t('hist_est'))}</th><th class="r">${esc(t('hist_act'))}</th></tr></thead><tbody>${
+    hist.map(e => `<tr><td>${esc(monthLabel(e.month))}</td><td class="r">${esc(moneyC(e.est, e.cur))}</td><td class="r">${esc(e.actual > 0 ? moneyC(e.actual, e.cur) : '—')}</td></tr>`).join('')
+  }</tbody></table>` : '';
+
+  const sd = splitData(c);
+  const splitHtml = sd.total > 0 ? `<h2>${esc(t('split_title'))}</h2><table class="bd"><tbody>${
+    sd.rows.map(r => bdRow(`${r.name} · ${num(r.pct, 1)}%`, money(r.amount))).join('') + bdRow(t('bd_total'), money(sd.total), 'total')
+  }</tbody></table>` : '';
+
+  return `<div class="rp">
+    <div class="rp-head">
+      <div class="rp-brand">⚡ Smart<em>Watt</em></div>
+      <div><div class="rp-title">${esc(t('rep_title'))}</div><div class="rp-date">${esc(t('rep_generated', { d: dateStr }))}</div></div>
+    </div>
+    <div class="rp-tiles">
+      ${tile(t('est_bill'), money(c.bill.total), 'big')}
+      ${tile(t('total_units'), num(c.total, 1) + ' kWh')}
+      ${tile(t('per_day'), num(c.total / days) + ' kWh')}
+      ${tile(t('daily_cost'), money(c.bill.total / days))}
+      ${tile(t('yearly'), money(c.bill.total * 12))}
+      ${tile(t('co2'), num(c.total * CO2_FACTOR, 1) + ' kg')}
+      ${tile(t('avg_rate'), c.total > 0 ? money(c.bill.total / c.total) : '—')}
+    </div>
+    <div class="rp-cols">
+      <div><h2>${esc(t('rep_tariff_h'))}</h2><table><tbody>${tar.join('')}</tbody></table></div>
+      <div><h2>${esc(t('breakdown'))}</h2><table class="bd"><tbody>${bdHtml(c.total, c.bill)}</tbody></table></div>
+    </div>
+    <h2>${esc(t('rep_appliances_h'))}</h2>
+    <table><thead><tr><th>${esc(t('rep_col_name'))}</th><th>${esc(t('rep_col_room'))}</th><th>${esc(t('rep_col_load'))}</th><th>${esc(t('rep_col_usage'))}</th><th class="r">${esc(t('rep_col_kwh'))}</th><th class="r">${esc(t('rep_col_cost'))}</th></tr></thead><tbody>${appRows}</tbody></table>
+    <div class="rp-cols">
+      <div><h2>${esc(t('chart_app'))}</h2>${bars(costBars)}</div>
+      <div><h2>${esc(t('chart_room'))}</h2>${bars(roomBars)}</div>
+    </div>
+    <h2>${esc(t('insights'))}</h2><ul>${insights}</ul>
+    ${cmpHtml}${histHtml}${splitHtml}
+    <div class="rp-foot"><span>${esc(t('footer_disclaimer'))}</span><span>${esc(t('created_by'))} Taioba, Jakia, Faysal</span></div>
+  </div>`;
+}
+
+function clearReportMode() {
+  document.body.classList.remove('printing-report');
+  $('#report').innerHTML = '';
+}
+
+$('#pdfBtn').addEventListener('click', () => {
+  if (!state.appliances.length) { toast(t('t_empty_export')); return; }
+  const prevTitle = document.title;
+  $('#report').innerHTML = buildReport();
+  document.title = 'SmartWatt-Report-' + new Date().toISOString().slice(0, 10);
+  document.body.classList.add('printing-report');
+  let finished = false;
+  const done = () => {
+    if (finished) return;
+    finished = true;
+    clearReportMode();
+    document.title = prevTitle;
+    window.removeEventListener('afterprint', done);
+  };
+  window.addEventListener('afterprint', done);
+  setTimeout(done, 120000); // safety net for browsers that never fire afterprint
+  toast(t('t_pdf_hint'));
+  setTimeout(() => window.print(), 80);
+});
+
 /* ================= master update ================= */
 function update() {
   const c = compute();
@@ -843,6 +1535,9 @@ function update() {
   renderCharts(c.items);
   renderInsights(c);
   renderTools(c);
+  renderCompare();
+  renderHistory();
+  renderSplitOut(c);
   save();
 }
 
@@ -900,8 +1595,7 @@ $('#slabReset').addEventListener('click', () => {
 $('#csvBtn').addEventListener('click', () => {
   if (!state.appliances.length) { toast(t('t_empty_export')); return; }
   const c = compute();
-  const q = v => '"' + String(v).replace(/"/g, '""') + '"';
-  const rows = [['Appliance', 'Room', 'Watt', 'Qty', 'Hours/day', 'Days/month', 'Duty %', 'kWh/month', `Cost (${state.currency})`]];
+  const rows = [['Appliance','Room', 'Watt', 'Qty', 'Hours/day', 'Days/month', 'Duty %', 'kWh/month', `Cost (${state.currency})`]];
   c.items.forEach(a => rows.push([a.name, a.room, a.w, a.q, a.h, a.d, a.duty, a.kwh.toFixed(2), a.cost.toFixed(2)]));
   rows.push([]);
   rows.push(['Total kWh', '', '', '', '', '', '', c.total.toFixed(2), '']);
@@ -909,22 +1603,15 @@ $('#csvBtn').addEventListener('click', () => {
   rows.push(['Fixed charge', '', '', '', '', '', '', '', c.bill.fixed.toFixed(2)]);
   rows.push([`VAT ${state.vat}%`, '', '', '', '', '', '', '', c.bill.vat.toFixed(2)]);
   rows.push(['Total bill', '', '', '', '', '', '', '', c.bill.total.toFixed(2)]);
-  const csv = '\uFEFF' + rows.map(r => r.map(q).join(',')).join('\r\n');
-  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'smartwatt-bill.csv';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  downloadCsv(rows, 'smartwatt-bill.csv');
   toast(t('t_csv'));
 });
 
-$('#printBtn').addEventListener('click', () => window.print());
+$('#printBtn').addEventListener('click', () => { clearReportMode(); window.print(); });
 
 function encodeState() {
-  const payload = Object.assign({}, state, { lang: undefined, theme: undefined });
+  // personal data (history, last comparison, splitter) is never put in a share link
+  const payload = Object.assign({}, state, { lang: undefined, theme: undefined, history: undefined, cmp: undefined, split: undefined });
   const bytes = new TextEncoder().encode(JSON.stringify(payload));
   let bin = '';
   bytes.forEach(b => { bin += String.fromCharCode(b); });
@@ -969,6 +1656,7 @@ function refreshLanguage() {
   buildRoomSelect();
   renderSlabs();
   renderChips();
+  renderSplitRows();
   refreshFormMode();
   update();
 }
@@ -1027,6 +1715,10 @@ function init() {
       const shared = sanitize(decodeState(location.hash.slice(3)), defaults());
       shared.lang = state.lang;
       shared.theme = state.theme;
+      // keep this visitor's own history / comparison / splitter – a link only carries appliances + tariff
+      shared.history = state.history;
+      shared.cmp = state.cmp;
+      shared.split = state.split;
       state = shared;
       loadedShared = true;
     } catch (e) { /* ignore bad link */ }
@@ -1041,6 +1733,10 @@ function init() {
   renderSlabs();
   resetForm();
   $('#sCost').value = CURRENCIES[state.currency].solar;
+  $('#cMonth').value = state.cmp.month || currentMonth();
+  $('#cActual').value = state.cmp.actual;
+  $('#cUnits').value = state.cmp.units;
+  renderSplitRows();
   update();
   if (loadedShared) toast(t('t_loaded'));
 

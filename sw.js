@@ -1,5 +1,5 @@
 /* SmartWatt service worker – network first, falls back to cache when offline */
-const CACHE = 'smartwatt-v2';
+const CACHE = 'smartwatt-v3';
 const ASSETS = ['./', 'index.html', 'style.css', 'script.js', 'manifest.json', 'icon.svg', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
